@@ -30,7 +30,8 @@ ui <- fluidPage(
         selectInput("color_opts", "Select Category to Color With",
                     choices = select_color_options),
         sliderInput("year_filter", "Select Lowest Year", min = min_year,
-                    max=max_year, value = min_year)
+                    max=max_year, value = min_year, 
+                    sep = "") # remove comma from year
       ),
       
       # Show a plot of the generated distribution
@@ -45,8 +46,8 @@ ui <- fluidPage(
 server <- function(input, output) {
   
   biopics_filtered <- reactive({
-    ##add code after biopics here
-    biopics 
+    ##add code after biopics here - this makes the user input do something
+    biopics %>% filter(year_release > input$year_filter)
   })
    
    output$scatter_plot <- renderPlot({
@@ -58,7 +59,7 @@ server <- function(input, output) {
    })
    
    output$boxoffice_boxplot <- renderPlot({
-     biopics %>% ggplot(aes_string(x=input$color_opts, y="box_office")) + 
+     biopics_filtered() %>% ggplot(aes_string(x=input$color_opts, y="box_office")) + 
        geom_boxplot() + theme(axis.text.x = element_text(angle=45))
    })
 }

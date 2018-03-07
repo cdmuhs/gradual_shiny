@@ -27,7 +27,8 @@ ui <- fluidPage(
    sidebarLayout(
       sidebarPanel(
         ## Add User Interface element here
-        
+        selectInput("color_opts", "Select Category to Color With",
+                    choices = select_color_options)
       ),
       
       # Show a plot of the generated distribution
@@ -41,9 +42,10 @@ ui <- fluidPage(
 ##Server is where all of the computations happen
 server <- function(input, output) {
   
+  # Render the plot
    output$scatter_plot <- renderPlot({
       biopics %>% ggplot(aes_string(y="box_office", x="year_release", 
-                                               color="type_of_subject")) + 
+                                    color = input$color_opts)) + 
        geom_point()
      
    })
