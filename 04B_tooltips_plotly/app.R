@@ -37,7 +37,7 @@ server <- function(input, output, session) {
       geom_point()
     
     ##notice we pass our ggplot into ggplotly, which makes it more interactive
-    g <- ggplotly(g, tooltip="all")
+    g <- ggplotly(g, tooltip="all") # ggplotly knows what to do with all the aes_string args above
   })
 
 }
